@@ -1,0 +1,30 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: ridemove-backend
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/ridemove}
+    username: ${DB_USER:ridemove_user}
+    password: ${DB_PASSWORD:ridemove_pass}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: ${JPA_DDL_AUTO:update}
+    show-sql: ${JPA_SHOW_SQL:false}
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+ridemove:
+  jwt:
+    secret: ${JWT_SECRET:CAMBIA_ESTE_SECRETO_EN_PRODUCCION_MIN_32_BYTES}
+    expiration-ms: ${JWT_EXPIRATION_MS:3600000}
+
+logging:
+  level:
+    com.ridemove: ${LOG_LEVEL:INFO}

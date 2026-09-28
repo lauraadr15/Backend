@@ -1,0 +1,56 @@
+{
+  "info": {
+    "name": "RideMove - Review 1",
+    "description": "Colección para demostrar Registro, Login y Dashboard con JWT",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:8080" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. Registro de usuario",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/api/auth/registro",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Laura Diaz\",\n  \"correo\": \"laura@ridemove.com\",\n  \"contrasena\": \"clave12345\",\n  \"telefono\": \"3000000000\",\n  \"rol\": \"PASAJERO\"\n}"
+        }
+      }
+    },
+    {
+      "name": "2. Login (obtener JWT)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "const data = pm.response.json();",
+              "if (data.token) { pm.collectionVariables.set('token', data.token); }"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"correo\": \"laura@ridemove.com\",\n  \"contrasena\": \"clave12345\"\n}"
+        }
+      }
+    },
+    {
+      "name": "3. Dashboard (requiere JWT)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+        "url": "{{base_url}}/api/dashboard"
+      }
+    }
+  ]
+}
